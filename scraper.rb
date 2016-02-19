@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 require 'wikidata/fetcher'
-require 'pry'
 
 names = EveryPolitician::Wikidata.wikipedia_xpath( 
   url: 'https://lv.wikipedia.org/wiki/Veidne:12._Saeima',
