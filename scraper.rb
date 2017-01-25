@@ -3,6 +3,8 @@
 
 require 'wikidata/fetcher'
 
+by_cat = (10 .. 12).map { |term| WikiData::Category.new("Kategorija:#{term}. Saeimas deputāti", 'lv').member_titles }.inject(:|)
+
 lv_names_12 = EveryPolitician::Wikidata.wikipedia_xpath(
   url: 'https://lv.wikipedia.org/wiki/Veidne:12._Saeima',
   xpath: '//li//a[not(@class="new")]/@title',
@@ -45,6 +47,6 @@ pl_names_12 = EveryPolitician::Wikidata.wikipedia_xpath(
 )
 
 EveryPolitician::Wikidata.scrape_wikidata(names: {
-  lv: lv_names_12 | lv_names_11 | lv_names_10,
+  lv: by_cat | lv_names_12 | lv_names_11 | lv_names_10,
   pl: pl_names_12 | pl_names_11 | pl_names_10,
 })
