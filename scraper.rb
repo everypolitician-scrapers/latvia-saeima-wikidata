@@ -46,7 +46,22 @@ pl_names_12 = EveryPolitician::Wikidata.wikipedia_xpath(
   before: '//span[@id="Przypisy"]',
 )
 
-EveryPolitician::Wikidata.scrape_wikidata(names: {
+# Find all P39s of the 12th Seima
+query = <<EOS
+  SELECT DISTINCT ?item
+  WHERE
+  {
+    BIND(wd:Q21191589 AS ?membership)
+    BIND(wd:Q20557340 AS ?term)
+
+    ?item p:P39 ?position_statement .
+    ?position_statement ps:P39 ?membership .
+    ?position_statement pq:P2937 ?term .
+  }
+EOS
+p39s = EveryPolitician::Wikidata.sparql(query)
+
+EveryPolitician::Wikidata.scrape_wikidata(ids: p39s, names: {
   lv: by_cat | lv_names_12 | lv_names_11 | lv_names_10,
   pl: pl_names_12 | pl_names_11 | pl_names_10,
 })
