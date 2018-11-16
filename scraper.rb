@@ -3,7 +3,14 @@
 
 require 'wikidata/fetcher'
 
-by_cat = (10 .. 12).map { |term| WikiData::Category.new("Kategorija:#{term}. Saeimas deputāti", 'lv').member_titles }.inject(:|)
+by_cat = (10 .. 13).map { |term| WikiData::Category.new("Kategorija:#{term}. Saeimas deputāti", 'lv').member_titles }.inject(:|)
+
+lv_names_13 = EveryPolitician::Wikidata.wikipedia_xpath(
+  url: 'https://lv.wikipedia.org/wiki/Veidne:13._Saeima',
+  xpath: '//li//a[not(@class="new")]/@title',
+  after: '//th[contains(.,"Deputāti")]',
+  before: '//th[contains(.,"Saistītie raksti")]',
+)
 
 lv_names_12 = EveryPolitician::Wikidata.wikipedia_xpath(
   url: 'https://lv.wikipedia.org/wiki/Veidne:12._Saeima',
@@ -62,6 +69,6 @@ EOS
 p39s = EveryPolitician::Wikidata.sparql(query)
 
 EveryPolitician::Wikidata.scrape_wikidata(ids: p39s, names: {
-  lv: by_cat | lv_names_12 | lv_names_11 | lv_names_10,
+  lv: by_cat | lv_names_13 | lv_names_12 | lv_names_11 | lv_names_10,
   pl: pl_names_12 | pl_names_11 | pl_names_10,
 })
